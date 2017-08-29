@@ -19,7 +19,7 @@
 
 #include "RFEConfiguration.h"
 
-boolean RFEConfiguration::isValidConfig() const
+bool RFEConfiguration::isValidConfig() const
 {
     return m_bValid;
 }

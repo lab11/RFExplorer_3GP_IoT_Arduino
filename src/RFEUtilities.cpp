@@ -19,7 +19,7 @@
 
 #include "RFEUtilities.h"
 
-boolean StartWith(char*pLine, const char* pLineCompare)
+bool StartWith(char*pLine, const char* pLineCompare)
 {
     return (0==strncmp(pLine,pLineCompare,strlen(pLineCompare)));
 }

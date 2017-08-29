@@ -18,9 +18,10 @@
 //=============================================================================
 
 //------------------------- Includes-------------------------------------------
-
+#include "mbed.h"
+#include <stdbool.h>
 #include "RFEUtilities.h"
-#include "CommonValues.h"
+#include "RFECommonValues.h"
 
 #ifndef RFESWEEPDATA_H_
 #define RFESWEEPDATA_H_
@@ -37,9 +38,9 @@ class RFESweepData
     //Total number of sweep steps captured
     uint16_t m_nTotalSteps;
     //The actual data container, a consecutive set of dBm amplitude values
-    byte m_arrAmplitude[MAX_SPECTRUM_STEPS];
+    uint8_t m_arrAmplitude[MAX_SPECTRUM_STEPS];
     //Variable defining whether object RFESweepData contains valid data for processing
-    boolean m_bValid;
+    bool m_bValid;
 
     public:
     RFESweepData()
@@ -53,10 +54,10 @@ class RFESweepData
     uint32_t getFrequencyKHZ(uint16_t nStep) const;
 
     //Check if is possible process current SweepData
-    boolean isValidSweep() const;
+    bool isValidSweep() const;
     
     //Set externally when Sweep DAtas are valid
-    void setValidSweep(boolean bValid);
+    void setValidSweep(bool bValid);
 
     //Process messages of serial buffer
     uint8_t processReceivedString(char* pLine, uint8_t* pLastMessage);

@@ -55,13 +55,13 @@ uint16_t ByteBuffer_RFE::getCapacity()
     return m_nCapacity;
 }
 
-byte ByteBuffer_RFE::peek(unsigned int index)
+uint8_t ByteBuffer_RFE::peek(unsigned int index)
 {
-    byte b = data[(m_nPosition+index)%m_nCapacity];
+    uint8_t b = data[(m_nPosition+index)%m_nCapacity];
     return b;
 }
 
-uint8_t ByteBuffer_RFE::put(byte in)
+uint8_t ByteBuffer_RFE::put(uint8_t in)
 {
     if(m_nLength < m_nCapacity)
     {
@@ -76,7 +76,7 @@ uint8_t ByteBuffer_RFE::put(byte in)
     return 0;
 }
 
-uint8_t ByteBuffer_RFE::putInFront(byte in)
+uint8_t ByteBuffer_RFE::putInFront(uint8_t in)
 {
     if(m_nLength < m_nCapacity)
     {
@@ -95,9 +95,9 @@ uint8_t ByteBuffer_RFE::putInFront(byte in)
     return 0;
 }
 
-byte ByteBuffer_RFE::get()
+uint8_t ByteBuffer_RFE::get()
 {
-    byte b = 0;
+    uint8_t b = 0;
 
     if(m_nLength > 0)
     {
@@ -110,9 +110,9 @@ byte ByteBuffer_RFE::get()
     return b;
 }
 
-byte ByteBuffer_RFE::getFromBack()
+uint8_t ByteBuffer_RFE::getFromBack()
 {
-    byte b = 0;
+    uint8_t b = 0;
     if(m_nLength > 0)
     {
         b = data[(m_nPosition+m_nLength-1)%m_nCapacity];
@@ -122,7 +122,7 @@ byte ByteBuffer_RFE::getFromBack()
     return b;
 }
 
-byte ByteBuffer_RFE::getWait()
+uint8_t ByteBuffer_RFE::getWait()
 {
     while (getSize() == 0)
     {
@@ -131,7 +131,7 @@ byte ByteBuffer_RFE::getWait()
             put(m_obj3GPSerial.getc());
         }
     }
-    byte b = get();
+    uint8_t b = get();
     
     return b;
 }

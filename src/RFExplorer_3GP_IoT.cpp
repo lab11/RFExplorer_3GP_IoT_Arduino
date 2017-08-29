@@ -22,6 +22,8 @@
 #include "RFExplorer_3GP_IoT.h"
 #include "ByteBuffer_RFE.h"
 
+DigitalOut RFEReset(_RFE_RESET);
+Serial m_obj3GPSerial(_RFE_TX,_RFE_RX, DEF_BAUD_RATE);
 
 void RFExplorer_3GP_IoT::LineBufferInit()
 {
@@ -318,7 +320,7 @@ uint8_t RFExplorer_3GP_IoT::getLastMessage() const
     return(m_nLastMessage);
 }
 
-boolean RFExplorer_3GP_IoT::isValid() const 
+bool RFExplorer_3GP_IoT::isValid() const 
 {    
     return (m_objRFEConfiguration.isValidConfig() && m_objRFESweepData.isValidSweep());
 }
@@ -343,5 +345,3 @@ RFESweepData* RFExplorer_3GP_IoT::getSweepData()
 {
     return (&m_objRFESweepData);
 }
-
-#endif

@@ -31,12 +31,12 @@ uint32_t RFESweepData::getFrequencyKHZ(uint16_t nStep) const
     }        
 }
 
-boolean RFESweepData::isValidSweep() const
+bool RFESweepData::isValidSweep() const
 {
     return m_bValid;
 }
 
-void  RFESweepData::setValidSweep(boolean bValid)
+void  RFESweepData::setValidSweep(bool bValid)
 {
     m_bValid = bValid;
 }
@@ -93,7 +93,7 @@ void RFESweepData::setAmplitudeDBM(uint16_t nStep, int8_t nDBM)
 uint16_t RFESweepData::getPeakStep() const
 {
     uint16_t nStep = 0;
-    byte nPeak = 255;
+    uint8_t nPeak = 255;
     
     for (uint16_t nInd = 0; nInd < m_nTotalSteps; nInd++)
     {

@@ -22,20 +22,19 @@
 
 
 //------------------------- Includes-------------------------------------------
+#ifndef RFEXPLORER_3GP_IOT_H_
+#define RFEXPLORER_3GP_IOT_H_
 
 #include "RFEConfiguration.h"
 #include "RFESweepData.h"
 #include "ByteBuffer_RFE.h"
-#include "CommonValues.h"
-
-#ifndef RFEXPLORER_3GP_IOT_H_
-#define RFEXPLORER_3GP_IOT_H_
+#include "RFECommonValues.h"
 
 //------------------------- Definitions & Declarations-------------------------
 #define _HEADER_LIB_3GP  "---RFExplorer 3G+ IoT Arduino---"
 #define _VERSION_LIB_3GP "-------Library v1.0.1701.1------"
 
-DigitalOut RFEReset(_RFE_RESET);
+extern DigitalOut RFEReset;
 
 //------------------------- Class----------------------------------------------
 
@@ -150,7 +149,7 @@ class RFExplorer_3GP_IoT
 
     //Function that determines whether the configuration and data from
     //the module has a correct format that allows the user to perform operations
-    boolean isValid() const;
+    bool isValid() const;
      
     //Obtain Max value of Array Data Amplitude and corresponding frequency.
     //*pFreqKHZ: Pointer that storage frequency at KHz of the maximum value.

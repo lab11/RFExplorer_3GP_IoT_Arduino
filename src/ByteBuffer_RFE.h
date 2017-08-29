@@ -26,13 +26,13 @@
 #define ByteBuffer_RFE_h
 
 #define BUFFER_CIRCULAR_SIZE 256
-Serial m_obj3GPSerial(_RFE_TX,_RFE_RX, DEF_BAUD_RATE);
+extern Serial m_obj3GPSerial;
 
 class ByteBuffer_RFE
 {
     private:
         
-    byte data[BUFFER_CIRCULAR_SIZE];
+    uint8_t data[BUFFER_CIRCULAR_SIZE];
 
     uint16_t m_nCapacity;
     uint16_t m_nPosition;
@@ -58,16 +58,16 @@ class ByteBuffer_RFE
     uint16_t getCapacity();
 
     // This method returns the byte that is located at index in the buffer but doesn't modify the buffer like the get methods (doesn't remove the retured byte from the buffer)
-    byte peek(unsigned int index);
+    uint8_t peek(unsigned int index);
 
     // Put methods, either a regular put in back or put in front
-    uint8_t putInFront(byte in);
-    uint8_t put(byte in);
+    uint8_t putInFront(uint8_t in);
+    uint8_t put(uint8_t in);
 
     // Get methods, either a regular get from front or from back. Even a active wait like getWait
-    byte get();
-    byte getFromBack();
-    byte getWait();
+    uint8_t get();
+    uint8_t getFromBack();
+    uint8_t getWait();
     
 };
 #endif

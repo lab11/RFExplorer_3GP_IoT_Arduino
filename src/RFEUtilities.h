@@ -16,8 +16,9 @@
 //License along with this library; if not, write to the Free Software
 //Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //=============================================================================
-
+#include "mbed.h"
 #include "stdlib.h"
+#include <stdbool.h>
 
 #ifndef RFEUTILITIES_H_
 #define RFEUTILITIES_H_
@@ -25,7 +26,7 @@
 //Compares the C string pLine with the string constant pLineCompare.
 //Use for examine command
 //Return 0 if is equal
-boolean StartWith(char*pLine, const char* pLineCompare);
+bool StartWith(char*pLine, const char* pLineCompare);
 
 //Appends a copy of character to the destination string called pLine.
 //The terminating null character in destination is overwritten by the first character of source,

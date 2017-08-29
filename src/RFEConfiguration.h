@@ -18,9 +18,10 @@
 //=============================================================================
 
 //------------------------- Includes------------------------------------------
-
+#include "mbed.h"
+#include <stdbool.h>
 #include "RFEUtilities.h"
-#include "CommonValues.h"
+#include "RFECommonValues.h"
 
 #ifndef RFECONFIGURATION_H_
 #define RFECONFIGURATION_H_
@@ -99,7 +100,7 @@ class RFEConfiguration
     
 
     //Variable defining whether object RFEConfiguration contains valid data received for processing
-    boolean m_bValid;
+    bool m_bValid;
     
 
     public:
@@ -126,7 +127,7 @@ class RFEConfiguration
     }
 
     //Check Valid Configuration
-    boolean isValidConfig() const;
+    bool isValidConfig() const;
 
     //Process messages of serial buffer
     //Returns: 0 if is possible to process
