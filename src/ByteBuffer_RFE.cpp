@@ -22,12 +22,7 @@
 //Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //=============================================================================
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-
+#include "mbed.h"
 #include "RFExplorer_3GP_IoT.h"
 #include "ByteBuffer_RFE.h"
 
@@ -131,9 +126,9 @@ byte ByteBuffer_RFE::getWait()
 {
     while (getSize() == 0)
     {
-        while (m_obj3GPSerial.available()>0)
+        while (m_obj3GPSerial.readable()>0)
         {   //Storage all bytesForRead
-            put(m_obj3GPSerial.read());
+            put(m_obj3GPSerial.getc());
         }
     }
     byte b = get();

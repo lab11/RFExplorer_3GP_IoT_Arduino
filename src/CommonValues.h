@@ -64,7 +64,8 @@
 #define	_RFE_RFGPIO0                 6
 #define	_RFE_RFGPIO1                 4
 #define	_RFE_RFGPIO2                 5
-
+#define _RFE_TX                     PB_1
+#define _RFE_RX                     PB_2
 
 //------------------------- Messages - See getLastMessage()--------------------
 

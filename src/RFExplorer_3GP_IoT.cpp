@@ -17,12 +17,10 @@
 //Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //=============================================================================
 
+#include "mbed.h"
+#include <string.h>
 #include "RFExplorer_3GP_IoT.h"
 #include "ByteBuffer_RFE.h"
-
-#if !defined (_SAM3XA_)
-    SoftwareSerial m_objDebugSP(11, 13);
-#endif
 
 
 void RFExplorer_3GP_IoT::LineBufferInit()
@@ -39,20 +37,13 @@ void RFExplorer_3GP_IoT::init()
     memset(m_pLine,0x0,sizeof(m_pLine));
     m_nCharCounter = 0;
     m_CircularBuffer.init();
-    m_obj3GPSerial.begin(DEF_BAUD_RATE);
-        
-    #ifdef MONITOR_SERIAL
-        monitorSerial_Init();
-    #endif
-
 }
 
 void RFExplorer_3GP_IoT::resetHardware() const
 {
-    pinMode(_RFE_RESET,OUTPUT);
-    digitalWrite(_RFE_RESET,LOW);
-    delay(DEF_COMMAND_RESET);
-    digitalWrite(_RFE_RESET,HIGH);
+    RFEReset = 0;
+    wait_ms(DEF_COMMAND_RESET);
+    RFEReset = 1;
 }
 
 void RFExplorer_3GP_IoT::requestConfig()
@@ -89,8 +80,8 @@ void RFExplorer_3GP_IoT::changeBaudrate(uint32_t nbaudrate)
     }
     //First send Command to RFExplorer 3G+ IoT, them change baud rate of local Arduino
     m_nBaudrate = nbaudrate;
-    delay(50); //Worst case change 2400 bauds to other - 16,6 ms
-    m_obj3GPSerial.begin(m_nBaudrate);
+    wait_ms(17); //Worst case change 2400 bauds to other - 16,6 ms
+    m_obj3GPSerial.baud(m_nBaudrate);
 }
 
 void RFExplorer_3GP_IoT::changeNumberSteps(uint16_t nSteps)
@@ -142,16 +133,16 @@ void RFExplorer_3GP_IoT::sendCommand(const char* pCommand, int nLength)
     {
         nLength=strlen(pCommand);
     }
-    m_obj3GPSerial.write(pCommand,nLength);
+    m_obj3GPSerial.printf("%.*s",nLength,pCommand);
 }
 
 uint8_t RFExplorer_3GP_IoT::updateBuffer()
 {
     uint8_t nCounterBytesUpdate = 0;
     
-    while (m_obj3GPSerial.available() > 0)
+    while (m_obj3GPSerial.readable() > 0)
     {   //Storage all bytesForRead on m_CircularBuffer
-        m_CircularBuffer.put(m_obj3GPSerial.read());
+        m_CircularBuffer.put(m_obj3GPSerial.getc());
         nCounterBytesUpdate++;
     } 
 
@@ -353,29 +344,4 @@ RFESweepData* RFExplorer_3GP_IoT::getSweepData()
     return (&m_objRFESweepData);
 }
 
-#if defined MONITOR_SERIAL
-    #if defined (_SAM3XA_)
-        HardwareSerial& RFExplorer_3GP_IoT::getMonitorSerial() const
-        {
-            return m_objMonitorSerial;
-        }
-    #else
-        SoftwareSerial& RFExplorer_3GP_IoT::getMonitorSerial() const
-        {
-            return m_objMonitorSerial;
-        }
-    #endif
 #endif
-
-#ifdef MONITOR_SERIAL
-    void RFExplorer_3GP_IoT::monitorSerial_Init()
-    {
-
-        m_objMonitorSerial.begin(DEBUG_BAUD_RATE);
-    
-        m_objMonitorSerial.println(F(_HEADER_LIB_3GP));
-        m_objMonitorSerial.println(F(_VERSION_LIB_3GP));
-    }
-
-#endif
-

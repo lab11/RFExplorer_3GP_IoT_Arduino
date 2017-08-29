@@ -25,14 +25,8 @@
 #ifndef ByteBuffer_RFE_h
 #define ByteBuffer_RFE_h
 
-#ifdef _SAM3XA_
-    #define m_obj3GPSerial Serial3
-    #define BUFFER_CIRCULAR_SIZE 1024
-#else
-    #define m_obj3GPSerial Serial
-    #define BUFFER_CIRCULAR_SIZE 256
-#endif
-
+#define BUFFER_CIRCULAR_SIZE 256
+Serial m_obj3GPSerial(_RFE_TX,_RFE_RX, DEF_BAUD_RATE);
 
 class ByteBuffer_RFE
 {

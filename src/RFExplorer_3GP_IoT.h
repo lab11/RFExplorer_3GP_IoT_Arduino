@@ -23,48 +23,19 @@
 
 //------------------------- Includes-------------------------------------------
 
-#include "Arduino.h"
 #include "RFEConfiguration.h"
 #include "RFESweepData.h"
 #include "ByteBuffer_RFE.h"
 #include "CommonValues.h"
-#if !defined (_SAM3XA_)
-    #include <SoftwareSerial.h>
-#endif
 
 #ifndef RFEXPLORER_3GP_IOT_H_
 #define RFEXPLORER_3GP_IOT_H_
 
 //------------------------- Definitions & Declarations-------------------------
-
-#define MONITOR_SERIAL
-
 #define _HEADER_LIB_3GP  "---RFExplorer 3G+ IoT Arduino---"
 #define _VERSION_LIB_3GP "-------Library v1.0.1701.1------"
 
-//IOT RF Explorer is only supported by Arduino DUE  
-//and Seeeduino UNO (currently version 4.2) platforms, 
-//These platforms operate at 3.3V. 
-//Any other plate is incompatible because voltage levels that handles 5V.
-
-
-#if defined(_SAM3XA_)  && defined(__AVR_ATmega328P__)
-    #error REVIEW COMPILATION DEFINED BOARD
-#endif
-
-#if !defined(_SAM3XA_)  && !defined(__AVR_ATmega328P__)
-    #error REVIEW COMPILATION DEFINED BOARD
-#endif
-
-
-#ifdef MONITOR_SERIAL
-    #if defined (_SAM3XA_)
-        #define m_objMonitorSerial Serial
-    #else
-        #define m_objMonitorSerial m_objDebugSP
-    #endif
-#endif
-
+DigitalOut RFEReset(_RFE_RESET);
 
 //------------------------- Class----------------------------------------------
 
@@ -111,12 +82,6 @@ class RFExplorer_3GP_IoT
     void sendCommand(const char* pCommand, int nLength =-1);
 
 
-    //Methods to dump information through the serial port and check device operation.
-    #ifdef MONITOR_SERIAL
-    void monitorSerial_Init();
-    #endif
-
-    
     //Get the output line already split from m_CircularBuffer.
     //Returns: 0 if is possible to process otherwise ErrorCodes.
     uint8_t processReceivedString_GetNextLine();
@@ -200,17 +165,5 @@ class RFExplorer_3GP_IoT
     //Read access to internally object.
     //Returns object system to use methods and properties of RFE_SweepData class.
     RFESweepData* getSweepData();
-
-    //Access to internal Software serial using for task debugging.
-    //Different use between Arduino Due or Seeeduino
-    //See in definition of object m_objDebugSerialPort   
-    #if defined MONITOR_SERIAL
-        #if defined (_SAM3XA_)
-            HardwareSerial& getMonitorSerial() const;
-        #else
-            SoftwareSerial& getMonitorSerial() const;
-        #endif
-    #endif
-
 };
 #endif
