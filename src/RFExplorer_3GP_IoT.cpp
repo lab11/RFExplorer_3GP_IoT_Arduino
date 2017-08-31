@@ -31,14 +31,22 @@ void RFExplorer_3GP_IoT::LineBufferInit()
     m_nCharCounter = 0;
 }
 
+ByteBuffer_RFE* gbuf;
+void processByte() {
+    char g_byte = m_obj3GPSerial.getc();
+    gbuf->put(g_byte);
+}
+
 void RFExplorer_3GP_IoT::init()
 {
     m_nCounterError = 0;
     m_nBaudrate = DEF_BAUD_RATE;
+    m_obj3GPSerial.attach(processByte);
 
     memset(m_pLine,0x0,sizeof(m_pLine));
     m_nCharCounter = 0;
     m_CircularBuffer.init();
+    gbuf = &m_CircularBuffer;
 }
 
 void RFExplorer_3GP_IoT::resetHardware() const
