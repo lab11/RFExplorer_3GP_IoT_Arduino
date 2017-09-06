@@ -83,6 +83,9 @@ void RFExplorer_3GP_IoT::changeBaudrate(uint32_t nbaudrate)
         case 115200:
         sendCommand("#\x04" "c8");
         break;
+        case 500000:
+        sendCommand("#\x04" "c0");
+        break;
         default:
         case DEF_BAUD_RATE: //2400
         sendCommand("#\x04" "c2");
@@ -108,15 +111,15 @@ void RFExplorer_3GP_IoT::changeNumberSteps(uint16_t nSteps)
         case 512:
         sendCommand("#\x05" "CP" "\xFF");
         break;
-    }  
-}    
+    }
+}
 
 void RFExplorer_3GP_IoT::sendNewConfig(uint32_t nStartFreqKHZ, uint32_t nEndFreqKHZ)
 {
     char pCommand[35]; //#<Size>C2-F:Sssssss,Eeeeeee,tttt,bbbb
-    
+
     sprintf(pCommand,"# C2-F:%07lu,%07lu,000,-120", nStartFreqKHZ, nEndFreqKHZ);
-    
+
     pCommand[1]=strlen(pCommand);
     sendCommand(pCommand);
 }
@@ -129,11 +132,11 @@ void RFExplorer_3GP_IoT::setHold()
 void RFExplorer_3GP_IoT::setRun()
 {
     requestConfig();
-}    
-    
+}
+
 void RFExplorer_3GP_IoT::sleep()
 {
-    sendCommand("#\x03" "S");//#<Size>S    
+    sendCommand("#\x03" "S");//#<Size>S
 }
 
 
@@ -149,26 +152,26 @@ void RFExplorer_3GP_IoT::sendCommand(const char* pCommand, int nLength)
 uint8_t RFExplorer_3GP_IoT::updateBuffer()
 {
     uint8_t nCounterBytesUpdate = 0;
-    
+
     while (m_obj3GPSerial.readable() > 0)
     {   //Storage all bytesForRead on m_CircularBuffer
         m_CircularBuffer.put(m_obj3GPSerial.getc());
         nCounterBytesUpdate++;
-    } 
+    }
 
     return nCounterBytesUpdate;
-}    
-    
+}
+
 
 uint8_t RFExplorer_3GP_IoT::processReceivedString_GetNextLine()
 {
 
     uint8_t nReturnCode = _RFE_IGNORE;
     char cBufferRead = 0x00;
-    
+
     if (m_nCharCounter > STRING_SIZE)
     {
-        
+
         LineBufferInit();
         return _RFE_ERROR_STRING_OVERFLOW;
     }
@@ -279,14 +282,14 @@ uint8_t RFExplorer_3GP_IoT::processReceivedString()
         m_nLastMessage = _UNKNOWN_MESSAGE;
         if (m_objRFEConfiguration.processReceivedString(m_pLine, &m_nLastMessage) == _RFE_SUCCESS) //Is object Config
         {
-			nReturnCode = _RFE_SUCCESS; 
-            
+			nReturnCode = _RFE_SUCCESS;
+
 			if (m_nLastMessage == _CONFIG_MESSAGE)
 			{
-				m_objRFESweepData.setValidSweep(false);       
+				m_objRFESweepData.setValidSweep(false);
 				if (m_objRFEConfiguration.isValidConfig() == true)
 				{
-						//Update Configuration						
+						//Update Configuration
 						m_objRFESweepData.setStartFrequencyKHZ(m_objRFEConfiguration.getStartKHZ());
 						m_objRFESweepData.setStepFrequencyHZ(m_objRFEConfiguration.getStepHZ());
 						m_objRFESweepData.setTotalSteps(m_objRFEConfiguration.getFreqSpectrumSteps());
@@ -328,8 +331,8 @@ uint8_t RFExplorer_3GP_IoT::getLastMessage() const
     return(m_nLastMessage);
 }
 
-bool RFExplorer_3GP_IoT::isValid() const 
-{    
+bool RFExplorer_3GP_IoT::isValid() const
+{
     return (m_objRFEConfiguration.isValidConfig() && m_objRFESweepData.isValidSweep());
 }
 
